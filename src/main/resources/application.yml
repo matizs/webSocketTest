@@ -1,0 +1,30 @@
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url:  jdbc:mysql://10.168.244.138:13306/tutorial?serverTimezone=UTC
+    username: metiz
+    password: test
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    open-in-view: false
+  servlet:
+    multipart:
+      max-file-size: 314572800 #300MB
+      max-request-size: -1
+
+
+server:
+  tomcat:
+    max-http-form-post-size: 314572800 #300MB
+    max-swallow-size: 314572800 #300MB
+
+nubes:
+  url: http://a-dev.nubes.sto.navercorp.com:8000
+
+
+logging:
+  config: classpath:logback-custom.xml
+  level:
+    root: INFO

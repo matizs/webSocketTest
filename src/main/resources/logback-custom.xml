@@ -1,0 +1,12 @@
+<configuration>
+    <include resource="logging/console-log.xml" />
+    <!-- Logger -->
+    <logger name="com" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="STDOUT" />
+    </logger>
+    <!-- Root Logger -->
+    <root level="debug">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>
