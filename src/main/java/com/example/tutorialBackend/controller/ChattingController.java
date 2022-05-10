@@ -1,5 +1,8 @@
 package com.example.tutorialBackend.controller;
 
+import java.io.IOException;
+
+import org.springframework.http.MediaType;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -22,10 +25,8 @@ public class ChattingController {
         SendChatMessage scm = new SendChatMessage();
         scm.setOpcode("Chatting");
         try {
-
             scm.setPayload(mapper.writeValueAsString(message));
             template.convertAndSend("/subscribe", scm);
-
         }catch (Exception e){
             e.printStackTrace();
         }

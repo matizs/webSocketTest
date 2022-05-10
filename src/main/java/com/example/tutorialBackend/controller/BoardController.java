@@ -5,6 +5,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -23,19 +24,19 @@ import com.example.tutorialBackend.dto.BoardListView;
 import com.example.tutorialBackend.dto.BoardView;
 import com.example.tutorialBackend.dto.request.BoardWriteInfo;
 import com.example.tutorialBackend.service.BoardService;
+import com.example.tutorialBackend.service.KafkaService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping("/api/board")
 @CrossOrigin(origins = "*")
+@RequiredArgsConstructor
 @Slf4j
 public class BoardController {
 
     private final BoardService boardService;
-
-    public BoardController(BoardService boardService) {
-        this.boardService = boardService;
-    }
+    private final KafkaService kafkaService;
 
     @GetMapping("/list")
     public ResponseEntity<BoardListView> getBoardList(
@@ -57,6 +58,7 @@ public class BoardController {
         @Validated @RequestBody BoardWriteInfo boardWriteInfo) {
         log.info("[보드 쓰기] : body : {}", boardWriteInfo.toString());
         boardService.writeBoard(boardWriteInfo, httpServletRequest.getRemoteAddr());
+        kafkaService.sendMessage(String.format("[새 글 작성됨] %s", boardWriteInfo.getTitle()));
         return ResponseEntity.ok(ErrorType.SUCCESS.getInfo());
     }
 

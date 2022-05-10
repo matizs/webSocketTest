@@ -13,7 +13,12 @@ spring:
     multipart:
       max-file-size: 314572800 #300MB
       max-request-size: -1
+  kafka:
+    bootstrap-servers: kafka-kafka-restart-test.wcs.svc.ad1.io.navercorp.com:9092
 
+kafka:
+  topic: alarm-test-v2
+  group: alarm-test-group-local
 
 server:
   tomcat:

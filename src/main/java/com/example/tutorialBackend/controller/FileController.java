@@ -4,12 +4,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.UUID;
 import java.util.zip.CRC32;
 import java.util.zip.CheckedInputStream;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import com.example.tutorialBackend.dto.BoardFileView;
@@ -94,9 +97,14 @@ public class FileController {
 
     @GetMapping("/download/{path}")
     public ResponseEntity<StreamingResponseBody> download(
-        @PathVariable String path
-    ) {
+        @PathVariable String path,
+        @RequestParam("fileName") String fileName
+    ) throws UnsupportedEncodingException {
+        fileName = URLEncoder.encode(fileName, "UTF-8");
+
+        final String resultFileName = "attachment; filename=\"" + fileName + "\"";
         return ResponseEntity.ok()
+            .header(HttpHeaders.CONTENT_DISPOSITION, resultFileName)
             .contentType(MediaType.APPLICATION_OCTET_STREAM)
             .body(outputStream -> {
                 try (

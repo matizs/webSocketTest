@@ -46,7 +46,7 @@ public class Board {
     @JsonProperty
     private String title;
 
-    @OneToOne(mappedBy = "board", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "board", fetch = FetchType.EAGER)
     @JsonProperty
     private BoardBody body;
 
